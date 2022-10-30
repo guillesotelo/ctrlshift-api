@@ -89,12 +89,12 @@ router.post('/update', async (req, res, next) => {
                                 <h2>Hello, ${username}!</h2>
                                 <h3>Your ${passwordChanged ? 'password' : 'email'} has been changed.</h3>
                                 ${passwordChanged ?
-                        `<h4>If it wasn't you, please <a href='https://ctrlshift-app.vercel.com/changePass?userEmail=${encrypt(email)}'>re-generate it</a> to a new one right away, or reply to this email with your registered email and username explaining the issue. We will be responding as soon as possible.</h4>`
+                        `<h4>If it wasn't you, please <a href='https://ctrlshift-app.vercel.app/changePass?userEmail=${encrypt(email)}'>re-generate it</a> to a new one right away, or reply to this email with your registered email and username explaining the issue. We will be responding as soon as possible.</h4>`
                         :
-                        `<h4>If it wasn't you, please <a href='https://ctrlshift-app.vercel.com/login'>login</a> with your new email: ${newEmail}, or reply to this email with your registered email and username explaining the issue. We will be responding as soon as possible.</h4>`
+                        `<h4>If it wasn't you, please <a href='https://ctrlshift-app.vercel.app/login'>login</a> with your new email: ${newEmail}, or reply to this email with your registered email and username explaining the issue. We will be responding as soon as possible.</h4>`
                     }
                                 <img src="https://i.imgur.com/8XcuFOs.png" style='height: 50px; width: auto; margin-top: 4vw;' alt="ctrlshift-logo" border="0">
-                                <a href='https://ctrlshift-app.vercel.com/login'><h5 style='margin: 4px;'>CtrlShift App</h5></a>
+                                <a href='https://ctrlshift-app.vercel.app/login'><h5 style='margin: 4px;'>CtrlShift App</h5></a>
                             </div>`
             }).catch((err) => {
                 console.error('Something went wrong!', err)
@@ -139,9 +139,9 @@ router.post('/changePass', async (req, res, next) => {
             html: `<div style='margin-top: 3vw; text-align: center;'>
                             <h2>Hello, ${userData.username}!</h2>
                             <h3>Your password has been changed.</h3>
-                            <h4>If it wasn't you, please <a href='https://ctrlshift-app.vercel.com/changePass?userEmail=${userEmail}'>re-generate it</a> to a new one right away, or reply to this email with your registered email and username.</h4>
+                            <h4>If it wasn't you, please <a href='https://ctrlshift-app.vercel.app/changePass?userEmail=${userEmail}'>re-generate it</a> to a new one right away, or reply to this email with your registered email and username.</h4>
                             <img src="https://i.imgur.com/8XcuFOs.png" style='height: 50px; width: auto; margin-top: 4vw;' alt="ctrlshift-logo" border="0">
-                            <a href='https://ctrlshift-app.vercel.com/login'><h5 style='margin: 4px;'>CtrlShift App</h5></a>
+                            <a href='https://ctrlshift-app.vercel.app/login'><h5 style='margin: 4px;'>CtrlShift App</h5></a>
                         </div>`
         }).catch((err) => console.error('Something went wrong!', err))
 
@@ -165,7 +165,7 @@ router.post('/resetByEmail', async (req, res, next) => {
             subject: 'Password Reset',
             html: `<div style='margin-top: 3vw; text-align: center;'>
                         <h2>Hello, ${user.username}!</h2>
-                        <h3>Click <a href='https://ctrlshift-app.vercel.com/changePass?userEmail=${encrypt(email)}'>here</a> to reset your password.</h3>
+                        <h3>Click <a href='https://ctrlshift-app.vercel.app/changePass?userEmail=${encrypt(email)}'>here</a> to reset your password.</h3>
                         <img src="https://i.imgur.com/8XcuFOs.png" style='height: 50px; width: auto; margin-top: 4vw;' alt="ctrlshift-logo" border="0">
                         <h5 style='margin: 4px;'>CtrlShift Team</h5>
                     </div>`
