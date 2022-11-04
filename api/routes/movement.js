@@ -51,6 +51,8 @@ router.post('/', async (req, res, next) => {
         }
 
         const newMovement = await Movement.create(movData)
+        
+        if (!newMovement) return res.status(400).send('Bad request')
         res.status(200).json({ newMovement })
     } catch (err) {
         console.error('Something went wrong!', err)
