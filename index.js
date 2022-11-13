@@ -33,6 +33,6 @@ if(process.env.NODE_ENV === 'production') {
 connection.on("error", console.error.bind("Connection error: ", console))
 
 connection.once("open", () => {
-  console.log("Conected successfully to DB")
-  app.listen(PORT, () => console.log(`Server listening to Cluster`))
+  console.log("* Conected successfully to DB *")
+  app.listen(PORT, () => console.log("* Server listening... *"))
 })
