@@ -30,13 +30,11 @@ if(process.env.NODE_ENV === 'production') {
   })
 }
 
-const server = async () => {
-  connection.on("error", console.error.bind("Connection error: ", console))
-  
-  connection.once("open", () => {
-    console.log("* Conected successfully to DB *")
-    app.listen(PORT, () => console.log("* Server listening... *"))
-  })
-}
+connection.on("error", console.error.bind("Connection error: ", console))
 
-export default server
+connection.once("open", async () => {
+  console.log("* Conected successfully to DB *")
+  app.listen(PORT, () => console.log("* Server listening... *"))
+})
+
+export default app
