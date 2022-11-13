@@ -36,5 +36,3 @@ connection.once("open", () => {
   console.log("* Conected successfully to DB *")
   app.listen(PORT, () => console.log("* Server listening... *"))
 })
-
-export default app
