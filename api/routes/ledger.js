@@ -127,8 +127,7 @@ router.post('/update', async (req, res, next) => {
                 ledgerData.isEncrypted = true
             }
         }
-        const _ = await Ledger.findByIdAndUpdate(id, ledgerData, { useFindAndModify: false })
-        const newLedger = await Ledger.findById(id)
+        const newLedger = await Ledger.findByIdAndUpdate(id, ledgerData, { returnDocument: "after", useFindAndModify: false })
         if (!newLedger) return res.status(404).send('Error updating Ledger.')
 
         if (newLedger.isEncrypted) {
