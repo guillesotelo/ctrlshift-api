@@ -28,12 +28,12 @@ app.use((err, _, res, __) => {
 
 const PORT = process.env.PORT || 5000
 
-if(process.env.NODE_ENV === 'production') {
-  app.use(express.static('build'))
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'build', 'index.html'))
-  })
-}
+// if(process.env.NODE_ENV === 'production') {
+//   app.use(express.static('build'))
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, 'build', 'index.html'))
+//   })
+// }
 
 connection.on("error", console.error.bind("Connection error: ", console))
 
@@ -41,3 +41,5 @@ connection.once("open", () => {
   console.log("* Conected successfully to DB *")
   app.listen(PORT, () => console.log("* Server listening... *"))
 })
+
+module.exports = app
