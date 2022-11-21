@@ -6,8 +6,8 @@ const movementRoutes = require('./movement')
 const ledgerRoutes = require('./ledger')
 const reportRoutes = require('./report')
 
-router.use('/movement', movementRoutes)
 router.use('/user', userRoutes)
+router.use('/movement', movementRoutes)
 router.use('/ledger', ledgerRoutes)
 router.use('/report', reportRoutes)
 

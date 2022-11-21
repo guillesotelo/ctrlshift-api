@@ -31,6 +31,24 @@ router.post('/', async (req, res, next) => {
     }
 })
 
+//Check if it's admin user
+router.get('/admin', async (req, res, next) => {
+    try {
+        const { email } = req.query
+
+        const user = await User.findOne({ email }).exec()
+        if (!user) return res.status(401).send('Email not found')
+
+        res.status(200).json({
+            isAdmin: user.isAdmin || false
+        })
+
+    } catch (err) {
+        console.error('Something went wrong!', err)
+        res.send(500).send('Server Error')
+    }
+})
+
 //Google Auth
 router.post("/auth/google", async (req, res) => {
     const { credential } = req.body
