@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const reportSchema = new mongoose.Schema({
+    date: {
+        type: Date,
+        default: new Date()
+    },
     title: {
         type: String
     },
