@@ -37,6 +37,9 @@ const movementSchema = new mongoose.Schema({
     isEncrypted: {
         type: Boolean,
         default: false
+    },
+    extraordinary: {
+        type: String
     }
 })
 

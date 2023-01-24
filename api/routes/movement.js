@@ -21,6 +21,7 @@ router.get('/', async (req, res, next) => {
                     movData.category = decrypt(mov.category)
                     movData.pay_type = decrypt(mov.pay_type)
                     movData.user = decrypt(mov.user)
+                    movData.extraordinary = mov.extraordinary ? decrypt(mov.extraordinary) : ''
 
                     return movData
                 } else return mov
@@ -47,11 +48,12 @@ router.post('/', async (req, res, next) => {
             pay_type: encrypt(req.body.pay_type),
             installments: req.body.installments,
             user: encrypt(req.body.user),
+            extraordinary: encrypt(req.body.extraordinary),
             isEncrypted: true
         }
 
         const newMovement = await Movement.create(movData)
-        
+
         if (!newMovement) return res.status(400).send('Bad request')
         res.status(200).json({ newMovement })
     } catch (err) {
@@ -67,7 +69,7 @@ router.post('/update', async (req, res, next) => {
         let movData = { ...req.body }
 
         for (let key in movData) {
-            const toEncrypt = ['author', 'detail', 'amount', 'category', 'pay_type', 'user']
+            const toEncrypt = ['author', 'detail', 'amount', 'category', 'pay_type', 'user', 'extraordinary']
             if (toEncrypt.includes(key)) {
                 movData[key] = encrypt(movData[key])
                 movData.isEncrypted = true
