@@ -1,3 +1,4 @@
+const dotenv = require('dotenv')
 const express = require('express')
 const router = express.Router()
 const { User } = require('../db/models')
@@ -5,6 +6,10 @@ const { OAuth2Client } = require('google-auth-library')
 const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID)
 const transporter = require('../helpers/mailer')
 const { encrypt, decrypt } = require('../helpers')
+const jwt = require('jsonwebtoken')
+dotenv.config()
+const { JWT_SECRET } = process.env
+const { verifyToken } = require('../helpers')
 
 //User Login
 router.post('/', async (req, res, next) => {
@@ -18,11 +23,15 @@ router.post('/', async (req, res, next) => {
             const compareRes = await user.comparePassword(password)
             if (!compareRes) return res.status(401).send('Invalid credentials')
         }
+
+        const token = jwt.sign({ sub: user._id }, JWT_SECRET, { expiresIn: '30d' })
+
         res.status(200).json({
             username: user.username,
             email,
             defaultLedger: user.defaultLedger || null,
-            language: user.language || null
+            language: user.language || null,
+            token
         })
 
     } catch (err) {
@@ -32,7 +41,7 @@ router.post('/', async (req, res, next) => {
 })
 
 //Check if it's admin user
-router.get('/admin', async (req, res, next) => {
+router.get('/admin', verifyToken, async (req, res, next) => {
     try {
         const { email } = req.query
 
@@ -77,7 +86,7 @@ router.post('/create', async (req, res, next) => {
 })
 
 //Update User Data
-router.post('/update', async (req, res, next) => {
+router.post('/update', verifyToken, async (req, res, next) => {
     try {
         const { email, username, currentPass, newEmail, newName } = req.body
         let passwordChanged = false
@@ -92,7 +101,7 @@ router.post('/update', async (req, res, next) => {
         }
 
         const newData = req.body
-        if(newName) newData.username = newName
+        if (newName) newData.username = newName
 
         const newUser = await User.findOneAndUpdate(
             { username, email }, newData, { returnDocument: "after", useFindAndModify: false })
