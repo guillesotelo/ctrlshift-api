@@ -6,8 +6,8 @@ const { encrypt, decrypt } = require('../helpers')
 //Get all Ledgers by Email (currently not used)
 router.get('/all', async (req, res, next) => {
     try {
-        const email = req.body
-        const ledgers = await Ledger.find({ email })
+        const { email } = req.query
+        const ledgers = await Ledger.find({ email }).select('-pin')
         if (!ledgers) return res.status(404).send('No ledgers found.')
 
         res.status(200).json(ledgers)
@@ -49,7 +49,7 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-//Login Ledger
+//Login New Ledger
 router.post('/', async (req, res, next) => {
     try {
         const { name, pin } = req.body
@@ -58,6 +58,38 @@ router.post('/', async (req, res, next) => {
 
         const compareRes = await ledger.comparePin(pin)
         if (!compareRes) return res.status(401).send('Invalid credentials')
+
+        if (ledger.isEncrypted) {
+            res.status(200).json({
+                id: ledger.id,
+                email: ledger.email,
+                name: ledger.name,
+                settings: ledger.settings.includes('authors') ? ledger.settings : decrypt(ledger.settings),
+                notes: ledger.notes === '[]' ? ledger.notes : decrypt(ledger.notes),
+                tasks: ledger.tasks === '[]' ? ledger.tasks : decrypt(ledger.tasks)
+            })
+        } else {
+            res.status(200).json({
+                id: ledger.id,
+                email: ledger.email,
+                name: ledger.name,
+                settings: ledger.settings,
+                notes: ledger.notes || [],
+                tasks: ledger.tasks || []
+            })
+        }
+    } catch (err) {
+        console.error('Something went wrong!', err)
+        res.send(500).send('Server Error')
+    }
+})
+
+//Login Local Ledger
+router.post('/loginLocal', async (req, res, next) => {
+    try {
+        const { name, email } = req.body
+        const ledger = await Ledger.findOne({ name, email })
+        if (!ledger) return res.status(404).send('No ledger found.')
 
         if (ledger.isEncrypted) {
             res.status(200).json({
