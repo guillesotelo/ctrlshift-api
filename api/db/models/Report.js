@@ -21,7 +21,7 @@ const reportSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     }
-})
+}, { timestamps: true })
 
 const Report = mongoose.model('Report', reportSchema)
 

@@ -29,7 +29,7 @@ const ledgerSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     }
-})
+}, { timestamps: true })
 
 ledgerSchema.pre('save', function (next) {
     const ledger = this

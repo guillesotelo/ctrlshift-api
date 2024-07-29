@@ -41,7 +41,7 @@ const movementSchema = new mongoose.Schema({
     extraordinary: {
         type: String
     }
-})
+}, { timestamps: true })
 
 const Movement = mongoose.model('Movement', movementSchema)
 
