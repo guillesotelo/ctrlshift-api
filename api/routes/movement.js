@@ -62,6 +62,39 @@ router.post('/', async (req, res, next) => {
     }
 })
 
+//Save bulk Movements
+router.post('/bulk', async (req, res, next) => {
+    try {
+        const { bulkData, ledger, author, payType, user } = req.body
+
+        if (bulkData && bulkData.length) {
+            const encryptedBulk = bulkData.map(item => {
+                return {
+                    date: new Date(),
+                    ledger,
+                    author,
+                    detail: encrypt(item.name),
+                    amount: encrypt(item.amount),
+                    category: encrypt(item.category),
+                    pay_type: payType,
+                    installments: 1,
+                    user: encrypt(user),
+                    isEncrypted: true
+                }
+            })
+
+            const newMovements = await Movement.insertMany(encryptedBulk)
+
+            if (!newMovements) return res.status(400).send('Bad request')
+            res.status(200).json({ newMovements })
+
+        } else res.status(400).json('No bulk data loaded')
+    } catch (err) {
+        console.error('Something went wrong!', err)
+        res.send(500).send('Server Error')
+    }
+})
+
 //Update Movement by ID
 router.post('/update', async (req, res, next) => {
     try {
