@@ -65,12 +65,12 @@ router.post('/', async (req, res, next) => {
 //Save bulk Movements
 router.post('/bulk', async (req, res, next) => {
     try {
-        const { bulkData, ledger, author, payType, user } = req.body
+        const { bulkData, ledger, author, payType, user, date } = req.body
 
         if (bulkData && bulkData.length) {
             const encryptedBulk = bulkData.map(item => {
                 return {
-                    date: new Date(),
+                    date,
                     ledger,
                     author,
                     detail: encrypt(item.name),
